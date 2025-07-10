@@ -1,24 +1,40 @@
 $w.onReady(function () {
-    // حدث عند تغيير اختيار الغرف أو الأيام
-    $w('#numRooms').onChange(updatePrice);
-    $w('#numNights').onChange(updatePrice);
+  // عند تغيير أي مدخلات، نحسب الأسعار لكل الفنادق
+  $w('#numRooms, #checkIn, #checkOut').onChange(() => {
+    calculateHotelPrice('#price_gold', 400);
+    calculateHotelPrice('#price_white', 500);
+    calculateHotelPrice('#price_nights', 650);
+  });
 
-    function updatePrice() {
-        const rooms = Number($w('#numRooms').value);
-        const nights = Number($w('#numNights').value);
-
-        // التحقق من أن القيم موجودة وصحيحة
-        if (!rooms || !nights || rooms < 0 || nights < 0) {
-            $w('#totalPrice').text = "—";
-            return;
-        }
-
-        const roomPrice = 600;
-        const total = rooms * nights * roomPrice;
-
-        $w('#totalPrice').text = `${total} AED`;
-    }
-
-    // لتحديث السعر عند أول تحميل
-    updatePrice();
+  // تحديث عند التحميل الأول
+  calculateHotelPrice('#price_gold', 400);
+  calculateHotelPrice('#price_white', 500);
+  calculateHotelPrice('#price_nights', 650);
 });
+
+function calculateHotelPrice(resultId, baseNightPrice) {
+  const roomCount = Number($w('#numRooms').value);
+  const checkIn = $w('#checkIn').value;
+  const checkOut = $w('#checkOut').value;
+
+  if (!roomCount || !checkIn || !checkOut) {
+    $w(resultId).text = '—';
+    return;
+  }
+
+  const timeDiff = checkOut.getTime() - checkIn.getTime();
+  const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+  if (days <= 0) {
+    $w(resultId).text = 'تاريخ غير صالح';
+    return;
+  }
+
+  const baseTotal = baseNightPrice * roomCount * days;
+  const extraRooms = roomCount - 1;
+  const extraDays = days - 1;
+  const increaseFactor = 1 + 0.75 * (extraRooms + extraDays);
+  const finalPrice = Math.floor(baseTotal * increaseFactor);
+
+  $w(resultId).text = `${finalPrice} درهم`;
+}
