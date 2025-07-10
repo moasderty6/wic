@@ -1,13 +1,13 @@
 $w.onReady(function () {
-    // عند تغيير القيم
-    $w('#numRooms').onInput(updatePrice);
-    $w('#numNights').onInput(updatePrice);
+    // حدث عند تغيير اختيار الغرف أو الأيام
+    $w('#numRooms').onChange(updatePrice);
+    $w('#numNights').onChange(updatePrice);
 
     function updatePrice() {
         const rooms = Number($w('#numRooms').value);
         const nights = Number($w('#numNights').value);
 
-        // تحقق من أن القيم أرقام صالحة
+        // التحقق من أن القيم موجودة وصحيحة
         if (!rooms || !nights || rooms < 0 || nights < 0) {
             $w('#totalPrice').text = "—";
             return;
@@ -18,4 +18,7 @@ $w.onReady(function () {
 
         $w('#totalPrice').text = `${total} AED`;
     }
+
+    // لتحديث السعر عند أول تحميل
+    updatePrice();
 });
