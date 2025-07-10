@@ -50,7 +50,7 @@
       const nights = parseInt(nightsInput.value) || 0;
       const pricePerNight = 600;
       const total = rooms * nights * pricePerNight;
-      resultDiv.textContent = السعر: ${total} درهم;
+      resultDiv.textContent = `السعر: ${total} درهم`;
     }
 
     roomsInput.addEventListener('input', updatePrice);
