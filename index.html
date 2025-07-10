@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>حاسبة الحجز</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      padding: 20px;
+      background: #f8f8f8;
+      color: #222;
+      text-align: right;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      text-align: center;
+    }
+    #result {
+      font-size: 22px;
+      font-weight: bold;
+      color: #1a8917;
+    }
+  </style>
+</head>
+<body>
+  <label for="rooms">عدد الغرف:</label>
+  <input id="rooms" type="number" min="1" value="1" />
+
+  <label for="nights">عدد الأيام:</label>
+  <input id="nights" type="number" min="1" value="1" />
+
+  <div id="result">السعر: 600 درهم</div>
+
+  <script>
+    const roomsInput = document.getElementById('rooms');
+    const nightsInput = document.getElementById('nights');
+    const resultDiv = document.getElementById('result');
+
+    function updatePrice() {
+      const rooms = parseInt(roomsInput.value) || 0;
+      const nights = parseInt(nightsInput.value) || 0;
+      const pricePerNight = 600;
+      const total = rooms * nights * pricePerNight;
+      resultDiv.textContent = السعر: ${total} درهم;
+    }
+
+    roomsInput.addEventListener('input', updatePrice);
+    nightsInput.addEventListener('input', updatePrice);
+  </script>
+</body>
+</html>
